@@ -20,47 +20,113 @@ import kotlin.random.Random
 fun main() {
     // Setup game list
     val game = BuildList()
-    displayList(game)
 
 
     // Ask for player names
-    print("Player 1 name: ")
+    print("Player 1 name: ".red())
     val player1 = readln()
-    print("Player 2 name: ")
+    print("Player 2 name: ".cyan())
     val player2 = readln()
 
     var turn = 1
+    var tookCoin = 0
 
 
     // Game loop
-    while(true) {
+    while (true) {
+
+        displayList(game)
 
         // Player turns
-        if (turn == 1){
-            println("$player1's turn.")
-        }else{
-            println("$player2's turn.")
+        if (turn == 1) {
+            println("$player1's turn.".red())
+        } else {
+            println("$player2's turn.".cyan())
         }
 
 
-        // Move coin
-
-
-
         // Take coin
-        if (game.elementAt(1).toString() != " "){}
+        tookCoin = 0
+        if (game.elementAt(0).toString() != " ") {
+            println("Take coin on the left? [Y]/[N]".red())
+            if (readln().first().uppercase() == "Y") {
+                // If taken coin is Gold then Stop game loop
+                if (game.elementAt(0).toString() == "G") {
+                    break
+                } else {
+                    game[0] = " "
+                    displayList(game)
+                }
+                tookCoin = 1
+            }
+        }
+
+        // Move coin
+        if (tookCoin != 1) {
+            print("Which coin would you like to move? (See number below coin): ")
+            val movedCoin = readln().toInt() - 1
+            print("Where would you like to move the coin? (See number below space): ")
+            val moveTo = readln().toInt() - 1
+
+            game[moveTo] = game.elementAt(movedCoin)
+            game[movedCoin] = " "
+
+            // Take coin
+            if (moveTo == 0) {
+                if (game.elementAt(0).toString() != " ") {
+                    displayList(game)
+                    println("Take coin on the left? [Y]/[N]".red())
+                    if (readln().first().uppercase() == "Y") {
+                        if (game.elementAt(0).toString() == "G") {
+                            break
+                        } else {
+                            game[0] = " "
+                        }
+                    }
+                }
+            }
+        }
+        // Switch turns
+        if (turn == 1) turn = 2 else turn = 1
     }
     // Check who won
+
+    if (turn == 1) println("$player1 won!".red())
+    if (turn == 2) println("$player2 won!".cyan())
+
 }
+
+
+
 
 fun displayList(List: MutableList <String>) {
     print("┌")
-    print("─┬".repeat(List.size-1))
-    println("─┐")
+    print("─────┬".repeat(List.size-1))
+    println("─────┐")
 
-    for (i in List) {
-        print("│")
+    for (item in List) {
+        print("│ ")
+        if (item == "G"){
+            print("%-4s".format(item).yellow())
+        }else {
+            print("%-4s".format(item).grey())
+        }
     }
+    println("│")
+
+    print("├")
+    print("─────┼".repeat(List.size-1))
+    println("─────┤")
+
+    for (index in List.indices) {
+        print("│")
+        print(" %-4s".format(index + 1).grey())
+    }
+    println("│")
+
+    print("└")
+    print("─────┴".repeat(List.size-1))
+    println("─────┘")
 }
 
 
