@@ -46,7 +46,7 @@ fun main() {
 
         // Take coin
         tookCoin = 0
-        if (game.elementAt(0).toString() != " ") {
+        if (game.elementAt(0) != " ") {
             println("Take coin on the left? [Y]/[N]".red())
             if (readln().first().uppercase() == "Y") {
                 // If taken coin is Gold then Stop game loop
@@ -64,34 +64,57 @@ fun main() {
         // Move coin
         if (tookCoin != 1) {
 
-            var movedCoin = 0
-            var moveTo = 0
+            var movedCoin: Int?
+            var moveTo: Int?
 
-            while (movedCoin <= moveTo) {
+            while (true) {
                 print("Which coin would you like to move? (See number below coin): ")
-                movedCoin = readln().toInt() - 1
+                movedCoin = readln().toIntOrNull()
+                if (movedCoin == null) continue
+                movedCoin--
+
+                if (game.elementAt(movedCoin) == " ") {
+                    println("No coin there!".red())
+                    continue
+                }
+
                 print("Where would you like to move the coin? (See number below space): ")
-                moveTo = readln().toInt() - 1
+                moveTo = readln().toIntOrNull()
+                if (moveTo == null) continue
+                moveTo--
 
                 // Check if invalid (trying to move right, moving to a spot already full, moving an empty spot, or moving something not within the game list.)
-                if ((movedCoin <= moveTo) || (game.elementAt(moveTo) != " ") || (game.elementAt(movedCoin) == " ") || (movedCoin > 19) || (movedCoin < 0)) {
+                if (
+                    (moveTo >= movedCoin) ||
+                    (game.elementAt(moveTo) != " ") ||
+                    (movedCoin > 19) ||
+                    (movedCoin < 0)
+                ) {
                     println("Invalid Move".red())
-                    movedCoin = 0
-                    moveTo = 0
-                } else {
-                    // Check if moving through a coin
-                    for ( i in moveTo..<movedCoin) {
-                        if (game.elementAt(i) != " ") {
-                            println("Invalid Move".red())
-                            movedCoin = 0
-                            moveTo = 0
-                            break
-                        }
+                    continue
+                }
+
+
+                // Check if moving through a coin
+                var coinInWay = false
+                for ( i in moveTo..<movedCoin) {
+                    if (game.elementAt(i) != " ") {
+                        coinInWay = true
+                        break
                     }
                 }
+
+                if (coinInWay) {
+                    println("Invalid Move".red())
+                    continue
+                }
+
+                // If we get here, all must be good
+                break
             }
 
-            game[moveTo] = game.elementAt(movedCoin)
+
+            game[moveTo!!] = game.elementAt(movedCoin!!)
             game[movedCoin] = " "
 
             displayList(game)
@@ -99,7 +122,7 @@ fun main() {
 
             // Take coin
             if (moveTo == 0) {
-                if (game.elementAt(0).toString() != " ") {
+                if (game.elementAt(0) != " ") {
                     println("Take coin on the left? [Y]/[N]".red())
                     if (readln().first().uppercase() == "Y") {
                         if (game.elementAt(0).toString() == "G") {
