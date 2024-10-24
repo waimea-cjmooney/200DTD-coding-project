@@ -2,14 +2,13 @@ import kotlin.random.Random
 
 /**
  * ------------------------------------------------------------------------
- * PROJECT NAME HERE
+ * OLD GOLD
  * Level 2 programming project
  *
- * by YOUR NAME HERE
+ * by Corban Mooney
  *
- * BRIEF PROJECT DESCRIPTION HERE
- * BRIEF PROJECT DESCRIPTION HERE
- * BRIEF PROJECT DESCRIPTION HERE
+ * A short one dimensional game made using a single list to store the
+ * game state
  * ------------------------------------------------------------------------
  */
 
@@ -19,7 +18,7 @@ import kotlin.random.Random
  */
 fun main() {
     // Setup game list
-    val game = BuildList()
+    val game = buildList()
 
 
     // Ask for player names
@@ -29,7 +28,7 @@ fun main() {
     val player2 = readln()
 
     var turn = 1
-    var tookCoin = 0
+    var tookCoin: Int
 
 
     // Game loop
@@ -61,20 +60,46 @@ fun main() {
             }
         }
 
+
         // Move coin
         if (tookCoin != 1) {
-            print("Which coin would you like to move? (See number below coin): ")
-            val movedCoin = readln().toInt() - 1
-            print("Where would you like to move the coin? (See number below space): ")
-            val moveTo = readln().toInt() - 1
+
+            var movedCoin = 0
+            var moveTo = 0
+
+            while (movedCoin <= moveTo) {
+                print("Which coin would you like to move? (See number below coin): ")
+                movedCoin = readln().toInt() - 1
+                print("Where would you like to move the coin? (See number below space): ")
+                moveTo = readln().toInt() - 1
+
+                // Check if invalid (trying to move right, moving to a spot already full, moving an empty spot, or moving something not within the game list.)
+                if ((movedCoin <= moveTo) || (game.elementAt(moveTo) != " ") || (game.elementAt(movedCoin) == " ") || (movedCoin > 19) || (movedCoin < 0)) {
+                    println("Invalid Move".red())
+                    movedCoin = 0
+                    moveTo = 0
+                } else {
+                    // Check if moving through a coin
+                    for ( i in moveTo..<movedCoin) {
+                        if (game.elementAt(i) != " ") {
+                            println("Invalid Move".red())
+                            movedCoin = 0
+                            moveTo = 0
+                            break
+                        }
+                    }
+                }
+            }
 
             game[moveTo] = game.elementAt(movedCoin)
             game[movedCoin] = " "
 
+            displayList(game)
+
+
             // Take coin
             if (moveTo == 0) {
                 if (game.elementAt(0).toString() != " ") {
-                    displayList(game)
                     println("Take coin on the left? [Y]/[N]".red())
                     if (readln().first().uppercase() == "Y") {
                         if (game.elementAt(0).toString() == "G") {
@@ -87,9 +112,9 @@ fun main() {
             }
         }
         // Switch turns
-        if (turn == 1) turn = 2 else turn = 1
+        turn = if (turn == 1) 2 else 1
     }
-    // Check who won
+    // Check who won when we break
 
     if (turn == 1) println("$player1 won!".red())
     if (turn == 2) println("$player2 won!".cyan())
@@ -99,12 +124,12 @@ fun main() {
 
 
 
-fun displayList(List: MutableList <String>) {
+fun displayList(list: MutableList <String>) {
     print("┌")
-    print("─────┬".repeat(List.size-1))
+    print("─────┬".repeat(list.size-1))
     println("─────┐")
 
-    for (item in List) {
+    for (item in list) {
         print("│ ")
         if (item == "G"){
             print("%-4s".format(item).yellow())
@@ -115,23 +140,23 @@ fun displayList(List: MutableList <String>) {
     println("│")
 
     print("├")
-    print("─────┼".repeat(List.size-1))
+    print("─────┼".repeat(list.size-1))
     println("─────┤")
 
-    for (index in List.indices) {
+    for (index in list.indices) {
         print("│")
         print(" %-4s".format(index + 1).grey())
     }
     println("│")
 
     print("└")
-    print("─────┴".repeat(List.size-1))
+    print("─────┴".repeat(list.size-1))
     println("─────┘")
 }
 
 
 
-fun BuildList(): MutableList<String> {
+fun buildList(): MutableList<String> {
     // Place coins
     val list = mutableListOf<String>()
 
