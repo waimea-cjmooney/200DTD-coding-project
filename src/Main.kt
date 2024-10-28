@@ -117,12 +117,11 @@ fun main() {
             game[moveTo!!] = game.elementAt(movedCoin!!)
             game[movedCoin] = " "
 
-            displayList(game)
-
 
             // Take coin
             if (moveTo == 0) {
                 if (game.elementAt(0) != " ") {
+                    displayList(game)
                     println("Take coin on the left? [Y]/[N]".red())
                     if (readln().first().uppercase() == "Y") {
                         if (game.elementAt(0).toString() == "G") {
