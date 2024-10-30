@@ -83,7 +83,7 @@ fun main() {
                 if (moveTo == null) continue
                 moveTo--
 
-                // Check if invalid (trying to move right, moving to a spot already full, moving an empty spot, or moving something not within the game list.)
+                // Check if invalid (trying to move right, moving to a spot already full, or moving something not within the game list.)
                 if (
                     (moveTo >= movedCoin) ||
                     (game.elementAt(moveTo) != " ") ||
