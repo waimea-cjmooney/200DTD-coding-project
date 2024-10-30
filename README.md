@@ -1,6 +1,6 @@
-# PROJECT NAME HERE
+# 200 DTD kotlin project
 
-### Level 2 Programming Project by YOUR NAME HERE
+### Level 2 Programming Project by Corban Mooney
 
 This project is assessed against [AS91896](https://www.nzqa.govt.nz/nqfdocs/ncea-resource/achievements/2019/as91896.pdf)
 
@@ -8,11 +8,14 @@ This project is assessed against [AS91896](https://www.nzqa.govt.nz/nqfdocs/ncea
 
 The project involves the programming of a two-player game.
 
-BRIEF PROJECT DESCRIPTION HERE
-BRIEF PROJECT DESCRIPTION HERE
-BRIEF PROJECT DESCRIPTION HERE
-BRIEF PROJECT DESCRIPTION HERE
+Old Gold is a game played on a one-dimensional grid where the players move coins closer to the left.
 
+### The game has the following features and/or rules:
+
+- A player may only move a coin to the left.
+- A player may not move a coin past another.
+- A player may decide to take a coin if it is on the left-most space.
+- If a player decides to take a coin, it will end that player's turn.
 
 ## Source Code
 
